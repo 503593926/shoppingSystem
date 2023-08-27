@@ -1,6 +1,7 @@
 package MyFrame;
 
 import Data.PersonInfo;
+import MyFrame.userFrame_Jpanels.commodityPanel;
 import Oper.User;
 
 import javax.management.JMX;
@@ -127,6 +128,7 @@ public class UserFrame extends JFrame {
             if (lastPathComponent.equals(commodity)) {
                 // 商品界面
                 //sp.setRightComponent();
+                sp.setRightComponent(new commodityPanel());
             }
             else if (lastPathComponent.equals(shoppingCart)) {
                 // 购物车界面

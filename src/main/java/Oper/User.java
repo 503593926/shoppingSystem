@@ -1,7 +1,7 @@
 package Oper;
 
 /*
-管理员类:
+用户类:
 属性：
     account:用户名
     password:密码

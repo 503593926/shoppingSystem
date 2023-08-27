@@ -1,5 +1,6 @@
 package Data;
 
+import Oper.Commodity;
 import Oper.Person;
 import Oper.User;
 import com.alibaba.excel.EasyExcel;
@@ -40,8 +41,10 @@ public class UserInfo {
             ExcelWriter writer = EasyExcel.write(file).build();
             WriteSheet sheet1 = EasyExcel.writerSheet(0, "Sheet1").head(Person.class).build();
             WriteSheet sheet2 = EasyExcel.writerSheet(1, "Sheet2").head(User.class).build();
+            WriteSheet sheet3 = EasyExcel.writerSheet(2, "Sheet3").head(Commodity.class).build();
             writer.write((Collection<?>) null, sheet1);
             writer.write((Collection<?>) null, sheet2);
+            writer.write((Collection<?>) null, sheet3);
             writer.finish();
         }
         EasyExcel.read(file, User.class, new AnalysisEventListener<User>() {

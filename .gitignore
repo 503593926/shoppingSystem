@@ -39,3 +39,5 @@ build/
 *.xml
 .idea/encodings.xml
 *.xml
+pom.xml
+*.xml
