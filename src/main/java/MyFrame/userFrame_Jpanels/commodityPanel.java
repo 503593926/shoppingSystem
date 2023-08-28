@@ -1,6 +1,7 @@
 package MyFrame.userFrame_Jpanels;
 
 import Data.CommodityInfo;
+import MyFrame.BackgroundPanel;
 import MyFrame.MyPic;
 import Oper.Commodity;
 
@@ -16,9 +17,10 @@ import java.io.IOException;
 public class commodityPanel extends JPanel {
     private  DefaultListModel<Commodity> commodityModel = new DefaultListModel<>();
     JScrollPane scrollList = new JScrollPane();
-    ImageIcon backIcon = new ImageIcon("D:\\code\\java\\shopp\\src\\main\\resources\\icon\\商品.png");
+    ImageIcon backIcon = new ImageIcon("D:\\code\\java\\shopp\\src\\main\\resources\\icon\\返回.png");
     public commodityPanel() {
         this.setLayout(new BorderLayout()); // 使用 BorderLayout 布局管理器
+        this.setBackground(Color.white);
         // 获取商品信息
         CommodityInfo commodityInfo = CommodityInfo.getInstance();
         // 将商品信息添加到commodityModel中
@@ -51,36 +53,94 @@ public class commodityPanel extends JPanel {
     }
 
     private void showCommodityDetails(Commodity commodity) {
-        // 新建一个页面来显示详细的上品信息
-        JPanel panel = new JPanel();
-        panel.setLayout(new BorderLayout()); // 设置布局
-        panel.setBounds(0, 0, 100, 100);
-
-        // 创建一个头部页面
+        // 创建一个Box竖直容器来布局显示详细的商品信息
+        Box vBox = Box.createVerticalBox();
+        /* 头部容器的实现 */
+        // 创建一个头部容器
         JPanel headPanel = new JPanel();
-        headPanel.setLayout(new FlowLayout()); // 设置布局
-
+        // 设置布局 背景
+        headPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        headPanel.setBackground(Color.white);
+        headPanel.setMaximumSize(new Dimension(this.getWidth(), 30));
         // 创建返回图标
-        JLabel backLabel = new JLabel("21");
+        JLabel backLabel = new JLabel();
         backLabel.setIcon(backIcon);
         // 监听backLabel -> 点击后返回商品浏览界面
         backLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 commodityPanel.this.add(scrollList);
-                commodityPanel.this.remove(panel);
+                commodityPanel.this.remove(vBox);
                 // 重新绘制布局
                 commodityPanel.this.revalidate();
                 commodityPanel.this.repaint();
             }
         });
-
-        // 组装头部页面
+        // 组装头部容器
         headPanel.add(backLabel);
 
-        //
-        panel.add(headPanel, BorderLayout.NORTH);
-        this.add(panel);
+        /* 实现商品详细介绍面板*/
+        // 展示图片
+        //// 获取图片的image对象
+        File file = new File(commodity.getImg());
+        BufferedImage image;
+        try {
+            image = ImageIO.read(file);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        //// 创建自定义控件BackgroundPanel的对像来展示图片
+        BackgroundPanel commodityPic = new BackgroundPanel(image);
+        commodityPic.setMaximumSize(new Dimension(image.getWidth(null) * 250 / image.getHeight(null), 250));
+        // 展示商品的文字描述
+        //// 创建一个垂直容器来展示各组件
+        JPanel describePanel = new JPanel();
+        describePanel.setBackground(Color.red);
+        //describePanel.setLayout(new BorderLayout());
+        describePanel.setMaximumSize(new Dimension(this.getWidth() * 4 / 5, 100));
+        Box describeBox = Box.createVerticalBox();
+        //// 显示商品名称
+        JLabel nameLabel = new JLabel(commodity.getName());
+        nameLabel.setFont(new Font("微软雅黑", Font.BOLD, 20)); // 设置字体
+        //// 显示商品生产厂商和生产日期
+        Box hBox1 = Box.createHorizontalBox();
+        JLabel manufacturerLabel = new JLabel(commodity.getManufacturer());
+        manufacturerLabel.setFont(new Font("宋体", Font.PLAIN, 10));
+        JLabel dateLabel = new JLabel(commodity.getDate());
+        dateLabel.setFont(new Font("宋体", Font.PLAIN, 10));
+        hBox1.add(manufacturerLabel);
+        hBox1.add(Box.createHorizontalStrut(10));
+        hBox1.add(dateLabel);
+        //// 显示数量和价格
+        Box hBox2 = Box.createHorizontalBox();
+        JLabel quantityLabel = new JLabel(commodity.getQuantity());
+        manufacturerLabel.setFont(new Font("宋体", Font.PLAIN, 10));
+        JLabel retailPriceLabel = new JLabel(commodity.getRetailPrice());
+        dateLabel.setFont(new Font("宋体", Font.PLAIN, 10));
+        hBox2.add(quantityLabel);
+        hBox2.add(retailPriceLabel);
+        //// 组装商品的文字描述部分的各组件
+        describeBox.add(nameLabel);
+        describeBox.add(hBox1);
+        describeBox.add(hBox2);
+        describePanel.add(describeBox);
+
+        // 实现加入购物车和购买按钮
+        Box btnBox = Box.createHorizontalBox();
+        JButton addCar = new JButton("加入购物车");
+        JButton buy = new JButton("购买");
+        btnBox.add(addCar);
+        btnBox.add(buy);
+
+        // 组装完整页面
+        vBox.add(headPanel);
+        vBox.add(Box.createVerticalStrut(20));
+        vBox.add(commodityPic);
+        vBox.add(Box.createVerticalStrut(20));
+        vBox.add(describePanel);
+        vBox.add(Box.createVerticalStrut(20));
+        vBox.add(btnBox);
+        this.add(vBox, BorderLayout.CENTER);
     }
 
     private class myListCellRenderer extends DefaultListCellRenderer {
