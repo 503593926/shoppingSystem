@@ -13,24 +13,27 @@ import com.alibaba.excel.write.metadata.WriteSheet;
 import java.io.File;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Objects;
 
 /*
-商品信息类(单例模式):
+订单信息类(单例模式):
 属性:
-    idToCommodity ： 存储id到Commodity对象的映射
+    userIdToPayedCommodityId : 存储用户id到已完成商品id的映射
+    userIdToPayingCommodityId : 存储用户id到待支付商品id的映射
     filePath : excel数据文件的地址
 方法:
     CommodityInfo 读取excel中commodity的信息
-
  */
-public class CommodityInfo {
-    private static final CommodityInfo Commodity_INFO = new CommodityInfo();
-    private HashMap<Integer, Commodity> idToCommodity;  // 存储id到Commodity对象的映射
+public class OrderInfo {
+    private static final OrderInfo ORDER_INFO = new OrderInfo();
+    private HashMap<Integer, Integer> userIdToPayedCommodityId;  // 存储用户id到已完成商品id的映射
+    private HashMap<Integer, Integer> userIdToPayingCommodityId;  // 存储用户id到待支付商品id的映射
+
     private String filePath = "C:\\Users\\50359\\Desktop\\shopp.xlsx";  // excel数据文件的地址
 
-    public CommodityInfo() {
-        idToCommodity = new HashMap<>();
-        //  读取excel表中的信息 填充上面的三个映射
+    public OrderInfo() {
+        userIdToPayedCommodityId = new HashMap<>();
+        userIdToPayingCommodityId = new HashMap<>();
         //  若文件不存在就新建一个
         File file = new File(filePath);
         if (!file.exists()) {
@@ -45,10 +48,13 @@ public class CommodityInfo {
             writer.write((Collection<?>) null, sheet4);
             writer.finish();
         }
-        EasyExcel.read(file, Commodity.class, new AnalysisEventListener<Commodity>() {
+        EasyExcel.read(file, Order.class, new AnalysisEventListener<Order>() {
             @Override
-            public void invoke(Commodity commodity, AnalysisContext analysisContext) {
-                idToCommodity.put(commodity.getID(), commodity);
+            public void invoke(Order order, AnalysisContext analysisContext) {
+                if (order.getState() == 0)
+                    userIdToPayingCommodityId.put(order.getUserId(), order.getCommodityId());
+                else if (order.getState() == 1)
+                    userIdToPayedCommodityId.put(order.getUserId(), order.getCommodityId());
             }
 
             @Override
@@ -57,16 +63,24 @@ public class CommodityInfo {
         }).sheet(2).doRead();
     }
 
-    public static CommodityInfo getInstance() {
-        return Commodity_INFO;
+    public static OrderInfo getInstance() {
+        return ORDER_INFO;
     }
 
-    public HashMap<Integer, Commodity> getIdToCommodity() {
-        return idToCommodity;
+    public HashMap<Integer, Integer> getUserIdToPayedCommodityId() {
+        return userIdToPayedCommodityId;
     }
 
-    public void setIdToCommodity(HashMap<Integer, Commodity> idToCommodity) {
-        this.idToCommodity = idToCommodity;
+    public void setUserIdToPayedCommodityId(HashMap<Integer, Integer> userIdToPayedCommodityId) {
+        this.userIdToPayedCommodityId = userIdToPayedCommodityId;
+    }
+
+    public HashMap<Integer, Integer> getUserIdToPayingCommodityId() {
+        return userIdToPayingCommodityId;
+    }
+
+    public void setUserIdToPayingCommodityId(HashMap<Integer, Integer> userIdToPayingCommodityId) {
+        this.userIdToPayingCommodityId = userIdToPayingCommodityId;
     }
 
     public String getFilePath() {
@@ -76,5 +90,4 @@ public class CommodityInfo {
     public void setFilePath(String filePath) {
         this.filePath = filePath;
     }
-
 }

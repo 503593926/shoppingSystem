@@ -7,6 +7,7 @@ import Oper.Commodity;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -95,42 +96,56 @@ public class commodityPanel extends JPanel {
         // 展示商品的文字描述
         //// 创建一个垂直容器来展示各组件
         JPanel describePanel = new JPanel();
-        describePanel.setBackground(Color.red);
+        describePanel.setBackground(new Color(238, 213, 175, 44));
         //describePanel.setLayout(new BorderLayout());
         describePanel.setMaximumSize(new Dimension(this.getWidth() * 4 / 5, 100));
         Box describeBox = Box.createVerticalBox();
         //// 显示商品名称
-        JLabel nameLabel = new JLabel(commodity.getName());
-        nameLabel.setFont(new Font("微软雅黑", Font.BOLD, 20)); // 设置字体
+        JLabel nameLabel = new JLabel("产品名称:" + commodity.getName());
+        nameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        nameLabel.setFont(new Font("微软雅黑", Font.BOLD, 30)); // 设置字体
         //// 显示商品生产厂商和生产日期
         Box hBox1 = Box.createHorizontalBox();
-        JLabel manufacturerLabel = new JLabel(commodity.getManufacturer());
-        manufacturerLabel.setFont(new Font("宋体", Font.PLAIN, 10));
-        JLabel dateLabel = new JLabel(commodity.getDate());
-        dateLabel.setFont(new Font("宋体", Font.PLAIN, 10));
+        JLabel manufacturerLabel = new JLabel("生产厂家:" + commodity.getManufacturer());
+        manufacturerLabel.setFont(new Font("宋体", Font.PLAIN, 20));
+        manufacturerLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JLabel dateLabel = new JLabel("生产日期:" + commodity.getDate());
+        dateLabel.setFont(new Font("宋体", Font.PLAIN, 20));
         hBox1.add(manufacturerLabel);
-        hBox1.add(Box.createHorizontalStrut(10));
+        hBox1.add(Box.createHorizontalStrut(100));
         hBox1.add(dateLabel);
         //// 显示数量和价格
         Box hBox2 = Box.createHorizontalBox();
-        JLabel quantityLabel = new JLabel(commodity.getQuantity());
-        manufacturerLabel.setFont(new Font("宋体", Font.PLAIN, 10));
-        JLabel retailPriceLabel = new JLabel(commodity.getRetailPrice());
-        dateLabel.setFont(new Font("宋体", Font.PLAIN, 10));
+        JLabel quantityLabel = new JLabel("剩余数量:" + commodity.getQuantity());
+        quantityLabel.setFont(new Font("宋体", Font.PLAIN, 20));
+        JLabel retailPriceLabel = new JLabel("售价:" + commodity.getRetailPrice());
+        retailPriceLabel.setFont(new Font("宋体", Font.PLAIN, 20));
         hBox2.add(quantityLabel);
+        hBox2.add(Box.createHorizontalStrut(250));
         hBox2.add(retailPriceLabel);
         //// 组装商品的文字描述部分的各组件
         describeBox.add(nameLabel);
+        hBox1.add(Box.createVerticalStrut(30));
         describeBox.add(hBox1);
+        hBox1.add(Box.createVerticalStrut(30));
         describeBox.add(hBox2);
         describePanel.add(describeBox);
 
         // 实现加入购物车和购买按钮
+        JPanel btnPanel = new JPanel();
+        btnPanel.setBackground(Color.white);
+        btnPanel.setMaximumSize(new Dimension(this.getWidth(), 50));
         Box btnBox = Box.createHorizontalBox();
         JButton addCar = new JButton("加入购物车");
         JButton buy = new JButton("购买");
         btnBox.add(addCar);
+        btnBox.add(Box.createHorizontalStrut(100));
         btnBox.add(buy);
+        btnPanel.add(btnBox);
+        // 监听加入购物车按钮
+
+        // 监听购买按钮
+
 
         // 组装完整页面
         vBox.add(headPanel);
@@ -139,13 +154,16 @@ public class commodityPanel extends JPanel {
         vBox.add(Box.createVerticalStrut(20));
         vBox.add(describePanel);
         vBox.add(Box.createVerticalStrut(20));
-        vBox.add(btnBox);
+        vBox.add(btnPanel);
         this.add(vBox, BorderLayout.CENTER);
     }
 
-    private class myListCellRenderer extends DefaultListCellRenderer {
+
+    // 自定义渲染器
+    private class myListCellRenderer extends JCheckBox implements ListCellRenderer<Commodity> {
+
         @Override
-        public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+        public Component getListCellRendererComponent(JList<? extends Commodity> list, Commodity value, int index, boolean isSelected, boolean cellHasFocus) {
             // 获取每一个单元格的长宽
             int WIDTH = list.getWidth();
             int HEIGHT = list.getHeight();
