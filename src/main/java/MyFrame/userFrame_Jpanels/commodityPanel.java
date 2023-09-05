@@ -16,9 +16,10 @@ import java.io.File;
 import java.io.IOException;
 
 public class commodityPanel extends JPanel {
-    private  DefaultListModel<Commodity> commodityModel = new DefaultListModel<>();
+    private DefaultListModel<Commodity> commodityModel = new DefaultListModel<>();
     JScrollPane scrollList = new JScrollPane();
     ImageIcon backIcon = new ImageIcon("D:\\code\\java\\shopp\\src\\main\\resources\\icon\\返回.png");
+
     public commodityPanel() {
         this.setLayout(new BorderLayout()); // 使用 BorderLayout 布局管理器
         this.setBackground(Color.white);
@@ -31,6 +32,7 @@ public class commodityPanel extends JPanel {
         // 设置list的渲染器
         list.setCellRenderer(new myListCellRenderer());
         list.setFixedCellHeight(200); // 设置单元格的高度为150像素
+
 
         scrollList.setViewportView(list);
         // 添加点击事件监听器 -> 点击后进入页面详细展示商品信息
@@ -161,7 +163,6 @@ public class commodityPanel extends JPanel {
 
     // 自定义渲染器
     private class myListCellRenderer extends JCheckBox implements ListCellRenderer<Commodity> {
-
         @Override
         public Component getListCellRendererComponent(JList<? extends Commodity> list, Commodity value, int index, boolean isSelected, boolean cellHasFocus) {
             // 获取每一个单元格的长宽
@@ -225,3 +226,5 @@ public class commodityPanel extends JPanel {
         }
     }
 }
+
+

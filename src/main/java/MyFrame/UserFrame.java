@@ -2,6 +2,7 @@ package MyFrame;
 
 import Data.PersonInfo;
 import MyFrame.userFrame_Jpanels.commodityPanel;
+import MyFrame.userFrame_Jpanels.shoppingCarPanel;
 import Oper.User;
 
 import javax.management.JMX;
@@ -133,6 +134,7 @@ public class UserFrame extends JFrame {
             else if (lastPathComponent.equals(shoppingCart)) {
                 // 购物车界面
                 //sp.setRightComponent();
+                sp.setRightComponent(new shoppingCarPanel());
             }
             else if (lastPathComponent.equals(historyOrder)) {
                 // 历史订单界面
