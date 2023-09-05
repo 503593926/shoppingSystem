@@ -26,14 +26,14 @@ import java.util.Objects;
  */
 public class OrderInfo {
     private static final OrderInfo ORDER_INFO = new OrderInfo();
-    private HashMap<Integer, Integer> userIdToPayedCommodityId;  // 存储用户id到已完成商品id的映射
-    private HashMap<Integer, Integer> userIdToPayingCommodityId;  // 存储用户id到待支付商品id的映射
+    private HashMap<Integer, Order> userIdToPayedOrder;  // 存储用户id到已完成订单的映射
+    private HashMap<Integer, Order> userIdToPayingOrder;  // 存储用户id到待支付订单的映射
 
     private String filePath = "C:\\Users\\50359\\Desktop\\shopp.xlsx";  // excel数据文件的地址
 
     public OrderInfo() {
-        userIdToPayedCommodityId = new HashMap<>();
-        userIdToPayingCommodityId = new HashMap<>();
+        userIdToPayedOrder = new HashMap<>();
+        userIdToPayingOrder = new HashMap<>();
         //  若文件不存在就新建一个
         File file = new File(filePath);
         if (!file.exists()) {
@@ -52,9 +52,9 @@ public class OrderInfo {
             @Override
             public void invoke(Order order, AnalysisContext analysisContext) {
                 if (order.getState() == 0)
-                    userIdToPayingCommodityId.put(order.getUserId(), order.getCommodityId());
+                    userIdToPayingOrder.put(order.getUserId(), order);
                 else if (order.getState() == 1)
-                    userIdToPayedCommodityId.put(order.getUserId(), order.getCommodityId());
+                    userIdToPayedOrder.put(order.getUserId(), order);
             }
 
             @Override
@@ -67,21 +67,6 @@ public class OrderInfo {
         return ORDER_INFO;
     }
 
-    public HashMap<Integer, Integer> getUserIdToPayedCommodityId() {
-        return userIdToPayedCommodityId;
-    }
-
-    public void setUserIdToPayedCommodityId(HashMap<Integer, Integer> userIdToPayedCommodityId) {
-        this.userIdToPayedCommodityId = userIdToPayedCommodityId;
-    }
-
-    public HashMap<Integer, Integer> getUserIdToPayingCommodityId() {
-        return userIdToPayingCommodityId;
-    }
-
-    public void setUserIdToPayingCommodityId(HashMap<Integer, Integer> userIdToPayingCommodityId) {
-        this.userIdToPayingCommodityId = userIdToPayingCommodityId;
-    }
 
     public String getFilePath() {
         return filePath;
@@ -89,5 +74,21 @@ public class OrderInfo {
 
     public void setFilePath(String filePath) {
         this.filePath = filePath;
+    }
+
+    public HashMap<Integer, Order> getUserIdToPayedOrder() {
+        return userIdToPayedOrder;
+    }
+
+    public void setUserIdToPayedOrder(HashMap<Integer, Order> userIdToPayedOrder) {
+        this.userIdToPayedOrder = userIdToPayedOrder;
+    }
+
+    public HashMap<Integer, Order> getUserIdToPayingOrder() {
+        return userIdToPayingOrder;
+    }
+
+    public void setUserIdToPayingOrder(HashMap<Integer, Order> userIdToPayingOrder) {
+        this.userIdToPayingOrder = userIdToPayingOrder;
     }
 }

@@ -1,6 +1,8 @@
 package MyFrame;
 
 import Data.PersonInfo;
+import MyFrame.userFrame_Jpanels.ChangePasswordPanel;
+import MyFrame.userFrame_Jpanels.OrderHistoryPanel;
 import MyFrame.userFrame_Jpanels.commodityPanel;
 import MyFrame.userFrame_Jpanels.shoppingCarPanel;
 import Oper.User;
@@ -21,6 +23,7 @@ import java.awt.event.ActionListener;
 方法 :
  */
 public class UserFrame extends JFrame {
+    private int id; // 用户id
     private final int WIDTH = 800; // 该frame的宽度
     private final int HEIGHT = 600; // 该frame的高度
     // 选项图标
@@ -33,7 +36,8 @@ public class UserFrame extends JFrame {
     private ImageIcon resetPasswordIcon = new ImageIcon("D:\\code\\java\\shopp\\src\\main\\resources\\icon\\重置密码.png");
 
 
-    public UserFrame() {
+    public UserFrame(int id) {
+        this.id = id;
         init();
     }
 
@@ -81,9 +85,8 @@ public class UserFrame extends JFrame {
         JSplitPane sp = new JSplitPane();
 
         // 分割面板设置
-        sp.setContinuousLayout(true);
-        sp.setDividerLocation(160); // 分割线位置
-        sp.setDividerSize(7); // 分割线大小
+        sp.setDividerLocation(220); // 分割线位置
+        sp.setDividerSize(5); // 分割线大小
 
         /* 创建树形选项 */
         // 商品
@@ -129,22 +132,23 @@ public class UserFrame extends JFrame {
             if (lastPathComponent.equals(commodity)) {
                 // 商品界面
                 //sp.setRightComponent();
-                sp.setRightComponent(new commodityPanel());
+                sp.setRightComponent(new commodityPanel(id));
             }
             else if (lastPathComponent.equals(shoppingCart)) {
                 // 购物车界面
                 //sp.setRightComponent();
-                sp.setRightComponent(new shoppingCarPanel());
+                sp.setRightComponent(new shoppingCarPanel(id));
             }
             else if (lastPathComponent.equals(historyOrder)) {
                 // 历史订单界面
-                //sp.setRightComponent();
+                sp.setRightComponent(new OrderHistoryPanel(id));
             }
-            else if (lastPathComponent.equals(changePasswordIcon)) {
+            else if (lastPathComponent.equals(changePassword)) {
                 // 修改密码界面
-                //sp.setRightComponent();
+                sp.setRightComponent(new ChangePasswordPanel(id));
+                System.out.println("修改密码");
             }
-            else if (lastPathComponent.equals(resetPasswordIcon)) {
+            else if (lastPathComponent.equals(resetPassword)) {
                 // 重置密码界面
                 //sp.setRightComponent();
             }
@@ -171,7 +175,7 @@ public class UserFrame extends JFrame {
         }
     }
     public static void main(String[] args) {
-        new UserFrame();
+        new UserFrame(1);
     }
 
     private class MyRenderer extends DefaultTreeCellRenderer {

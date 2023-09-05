@@ -15,8 +15,26 @@ package Oper;
  */
 public class Commodity {
     private int ID; // 商品编号
-    private String name, manufacturer, date, type, purCost, retailPrice, quantity;  // 商品名称 生产厂家 生产日期 型号 进货价 零售价 数量
+    private int quantity; //数量
+    private String name, manufacturer, date, type; // 商品名称 生产厂家 生产日期 型号
     private String img;
+    private double purCost, retailPrice; // 进货价 零售价
+
+    public double getPurCost() {
+        return purCost;
+    }
+
+    public void setPurCost(double purCost) {
+        this.purCost = purCost;
+    }
+
+    public double getRetailPrice() {
+        return retailPrice;
+    }
+
+    public void setRetailPrice(double retailPrice) {
+        this.retailPrice = retailPrice;
+    }
 
     public String getImg() {
         return img;
@@ -66,27 +84,11 @@ public class Commodity {
         this.type = type;
     }
 
-    public String getPurCost() {
-        return purCost;
-    }
-
-    public void setPurCost(String purCost) {
-        this.purCost = purCost;
-    }
-
-    public String getRetailPrice() {
-        return retailPrice;
-    }
-
-    public void setRetailPrice(String retailPrice) {
-        this.retailPrice = retailPrice;
-    }
-
-    public String getQuantity() {
+    public int getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(String quantity) {
+    public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 }

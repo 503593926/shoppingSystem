@@ -57,6 +57,7 @@ public class CommodityInfo {
         }).sheet(2).doRead();
     }
 
+
     public static CommodityInfo getInstance() {
         return Commodity_INFO;
     }

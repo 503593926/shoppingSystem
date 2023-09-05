@@ -12,6 +12,23 @@ public class Order {
     private int userId;
     private int commodityId;
     private int state;
+    private int quantity;
+
+    // 生成含参构造器
+    public Order(int userId, int commodityId, int quantity, int state) {
+        this.userId = userId;
+        this.commodityId = commodityId;
+        this.state = state;
+        this.quantity = quantity;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 
     public int getUserId() {
         return userId;

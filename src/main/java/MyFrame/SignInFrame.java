@@ -73,6 +73,10 @@ public class SignInFrame extends JFrame {
             PersonInfo personInfo = PersonInfo.getInstance();
             if (personInfo.signIn(account, password)) {
                 // 成功登录
+                PersonInfo personInfo1 = PersonInfo.getInstance();
+                int id = personInfo.getAccountToID().get(account);
+                new UserFrame(id);
+                this.dispose();
             }
             else {
                 // 登陆失败

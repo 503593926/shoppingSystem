@@ -101,7 +101,7 @@ public class text {
 
                 // 创建三个标签来显示商品的文字说明
                 JLabel name = new JLabel(commodity.getName());
-                JLabel retailPrice = new JLabel(commodity.getRetailPrice());
+                JLabel retailPrice = new JLabel(Double.toString(commodity.getRetailPrice()));
                 JLabel manufacturer = new JLabel(commodity.getManufacturer());
                 // 设置字体
                 Font font = new Font("微软雅黑", Font.PLAIN, 20);
