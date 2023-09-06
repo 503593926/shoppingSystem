@@ -1,13 +1,15 @@
-package MyFrame;
+package ui.customframe;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class MyPic extends JPanel {
-
     private Image image;
     public MyPic(Image image) {
         this.image = image;
+    }
+    public MyPic() {
+
     }
     @Override
     protected void paintComponent(Graphics g) {
@@ -24,4 +26,13 @@ public class MyPic extends JPanel {
         g.drawImage(image, 0, 0, width, height, null);
         setBackground(Color.white);
     }
+
+    public Image getImage() {
+        return image;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
+    }
+
 }

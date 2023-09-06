@@ -1,12 +1,13 @@
-package MyFrame;
+package ui.signframe;
 
 import Data.PersonInfo;
+import ui.userframe.UserFrame;
+import ui.customframe.BackgroundPanel;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
 

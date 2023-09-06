@@ -1,21 +1,15 @@
-package MyFrame;
+package ui.userframe;
 
-import Data.PersonInfo;
-import MyFrame.userFrame_Jpanels.ChangePasswordPanel;
-import MyFrame.userFrame_Jpanels.OrderHistoryPanel;
-import MyFrame.userFrame_Jpanels.commodityPanel;
-import MyFrame.userFrame_Jpanels.shoppingCarPanel;
-import Oper.User;
+import ui.userframe.userframe_jpanel.ChangePasswordPanel;
+import ui.userframe.userframe_jpanel.OrderHistoryPanel;
+import ui.userframe.userframe_jpanel.commodityPanel;
+import ui.userframe.userframe_jpanel.shoppingCarPanel;
+import ui.signframe.SignInFrame;
 
-import javax.management.JMX;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeCellRenderer;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /*
 客户界面类：
@@ -165,7 +159,7 @@ public class UserFrame extends JFrame {
     }
 
     // 定义一个NodeData类，用于封装结点数据
-    class NodeData {
+    private class NodeData {
         public ImageIcon icon;
         public String name;
 

@@ -1,4 +1,4 @@
-package MyFrame.userFrame_Jpanels;
+package ui.userframe.userframe_jpanel;
 
 import Data.PersonInfo;
 import Oper.Person;

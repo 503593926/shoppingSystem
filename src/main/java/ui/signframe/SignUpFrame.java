@@ -1,7 +1,7 @@
-package MyFrame;
+package ui.signframe;
 
 import Data.PersonInfo;
-import Oper.Person;
+import ui.customframe.BackgroundPanel;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -10,7 +10,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class SignUpFrame extends SignInFrame{
+public class SignUpFrame extends SignInFrame {
 
     public SignUpFrame() {
         init();

@@ -1,11 +1,10 @@
-package MyFrame.userFrame_Jpanels;
+package ui.userframe.userframe_jpanel;
 
 import Data.CommodityInfo;
 import Data.OrderInfo;
-import Data.PersonInfo;
 import Data.UserInfo;
-import MyFrame.BackgroundPanel;
-import MyFrame.MyPic;
+import ui.customframe.BackgroundPanel;
+import ui.customframe.MyPic;
 import Oper.Commodity;
 import Oper.Order;
 
@@ -19,6 +18,8 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class commodityPanel extends JPanel {
     private int id; // 用户id
@@ -234,69 +235,67 @@ public class commodityPanel extends JPanel {
         this.add(vBox, BorderLayout.CENTER);
     }
 
+    private class myListCellRenderer implements ListCellRenderer<Commodity> {
+        private JPanel panel;
+        private MyPic pic;
+        private JLabel nameLabel;
+        private JLabel retailPriceLabel;
+        private JLabel manufacturerLabel;
+        // 图像缓存
+        private Map<String, BufferedImage> imgCache = new HashMap<>();
 
-    // 自定义渲染器
-    private class myListCellRenderer extends JCheckBox implements ListCellRenderer<Commodity> {
-        @Override
-        public Component getListCellRendererComponent(JList<? extends Commodity> list, Commodity value, int index, boolean isSelected, boolean cellHasFocus) {
-            // 获取每一个单元格的长宽
-            int WIDTH = list.getWidth();
-            int HEIGHT = list.getHeight();
-            // 创建容器
-            JPanel panel = new JPanel();
-            // 设置容器
+        public myListCellRenderer() {
+            panel = new JPanel();
             panel.setLayout(new BorderLayout());
-            // 空边框
-            Border emptyBorder = BorderFactory.createEmptyBorder(5, 2, 5, 0);
-            // 创建一个带颜色的边框
-            Color borderColor = new Color(0, 0, 0); // 指定边框颜色为红色
-            int borderWidth = 1; // 指定边框宽度为2像素
-            Border lineBorder = new LineBorder(borderColor, borderWidth);
 
-            // 创建一个复合边框，包含空白边框和有颜色的边框
+            // 设置容器边框
+            Border emptyBorder = BorderFactory.createEmptyBorder(5, 2, 5, 0);
+            Color borderColor = new Color(0, 0, 0);
+            int borderWidth = 1;
+            Border lineBorder = new LineBorder(borderColor, borderWidth);
             Border compoundBorder = BorderFactory.createCompoundBorder(emptyBorder, lineBorder);
             panel.setBorder(compoundBorder);
 
-            if (value instanceof Commodity) {
-                Commodity commodity = (Commodity) value;
+            // 创建图片标签
+            pic = new MyPic();
+            panel.add(pic, BorderLayout.WEST);
 
-                // 创建一个标签来显示商品的图片
-                File file = new File(commodity.getImg());
-                BufferedImage image;
-                try {
-                    image = ImageIO.read(file);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-                // 自定义图片绘制控件
-                MyPic pic = new MyPic(image);
-                pic.setPreferredSize(new Dimension(WIDTH / 2, HEIGHT));
+            // 创建文字标签
+            nameLabel = new JLabel();
+            retailPriceLabel = new JLabel();
+            manufacturerLabel = new JLabel();
+            Font font = new Font("微软雅黑", Font.PLAIN, 20);
+            nameLabel.setFont(font);
+            retailPriceLabel.setFont(font);
+            manufacturerLabel.setFont(font);
 
-                // 创建三个标签来显示商品的文字说明
-                JLabel name = new JLabel(commodity.getName());
-                JLabel retailPrice = new JLabel(Double.toString(commodity.getRetailPrice()));
-                JLabel manufacturer = new JLabel(commodity.getManufacturer());
-                // 设置字体
-                Font font = new Font("微软雅黑", Font.PLAIN, 20);
-                name.setFont(font);
-                retailPrice.setFont(font);
-                manufacturer.setFont(font);
+            // 创建垂直盒子并添加标签
+            Box vBox = Box.createVerticalBox();
+            vBox.add(nameLabel);
+            vBox.add(Box.createVerticalStrut(50));
+            vBox.add(retailPriceLabel);
+            vBox.add(Box.createVerticalStrut(30));
+            vBox.add(manufacturerLabel);
+            panel.add(vBox, BorderLayout.CENTER);
+        }
 
-                // 组装
-                Box vBox = Box.createVerticalBox();
+        @Override
+        public Component getListCellRendererComponent(JList<? extends Commodity> list, Commodity value, int index, boolean isSelected, boolean cellHasFocus) {
+            int WIDTH = list.getWidth();
+            int HEIGHT = list.getHeight();
+            // 更新组件的内容
+            Commodity commodity = (Commodity) value;
 
-                vBox.add(name);
-                vBox.add(Box.createVerticalStrut(50));
-                vBox.add(retailPrice);
-                vBox.add(Box.createVerticalStrut(30));
-                vBox.add(manufacturer);
+            // 设置图片
+            pic.setImage(loadImage(commodity.getImg()));
+            pic.setPreferredSize(new Dimension(WIDTH / 2, HEIGHT));
 
-                // 将图片和文字标签添加到面板
-                panel.add(pic, BorderLayout.WEST);
-                panel.add(vBox, BorderLayout.CENTER);
-            }
+            // 设置标签内容
+            nameLabel.setText(commodity.getName());
+            retailPriceLabel.setText(Double.toString(commodity.getRetailPrice()));
+            manufacturerLabel.setText(commodity.getManufacturer());
 
-            // 选中和非选中时的显示模式
+            // 设置选中和非选中时的显示模式
             if (isSelected) {
                 panel.setBackground(list.getSelectionBackground());
                 panel.setForeground(list.getSelectionForeground());
@@ -307,7 +306,101 @@ public class commodityPanel extends JPanel {
 
             return panel;
         }
+
+        private BufferedImage loadImage(String imagePath) {
+            BufferedImage image = imgCache.get(imagePath);
+            if (image == null) {
+                // 图像未缓存, 加载并放入缓存
+                try {
+                    File file = new File(imagePath);
+                    image = ImageIO.read(file);
+                } catch (IOException e) {
+                    // 处理图像加载错误
+                    e.printStackTrace();
+                }
+                imgCache.put(imagePath, image);
+            }
+            return image;
+        }
+
     }
+
+
+
+    // 自定义渲染器
+//    private class myListCellRenderer implements ListCellRenderer<Commodity> {
+//        JPanel panel = new JPanel();    // 创建主容器
+//
+//        public myListCellRenderer() {
+//            panel.setLayout(new BorderLayout());
+//            // 设置容器
+//            Border emptyBorder = BorderFactory.createEmptyBorder(5, 2, 5, 0);  // 空边框
+//            // 创建一个带颜色的边框
+//            Color borderColor = new Color(0, 0, 0); // 指定边框颜色
+//            int borderWidth = 1; // 指定边框宽度为2像素
+//            Border lineBorder = new LineBorder(borderColor, borderWidth);
+//
+//            // 创建一个复合边框，包含空白边框和有颜色的边框
+//            Border compoundBorder = BorderFactory.createCompoundBorder(emptyBorder, lineBorder);
+//            panel.setBorder(compoundBorder);
+//        }
+//        @Override
+//        public Component getListCellRendererComponent(JList<? extends Commodity> list, Commodity value, int index, boolean isSelected, boolean cellHasFocus) {
+//            // 获取每一个单元格的长宽
+//            int WIDTH = list.getWidth();
+//            int HEIGHT = list.getHeight();
+//
+//            if (value instanceof Commodity) {
+//                Commodity commodity = (Commodity) value;
+//
+//                // 创建一个标签来显示商品的图片
+//                File file = new File(commodity.getImg());
+//                BufferedImage image;
+//                try {
+//                    image = ImageIO.read(file);
+//                } catch (IOException e) {
+//                    throw new RuntimeException(e);
+//                }
+//                // 自定义图片绘制控件
+//                MyPic pic = new MyPic(image);
+//                pic.setPreferredSize(new Dimension(WIDTH / 2, HEIGHT));
+//
+//                // 创建三个标签来显示商品的文字说明
+//                JLabel name = new JLabel(commodity.getName());
+//                JLabel retailPrice = new JLabel(Double.toString(commodity.getRetailPrice()));
+//                JLabel manufacturer = new JLabel(commodity.getManufacturer());
+//                // 设置字体
+//                Font font = new Font("微软雅黑", Font.PLAIN, 20);
+//                name.setFont(font);
+//                retailPrice.setFont(font);
+//                manufacturer.setFont(font);
+//
+//                // 组装
+//                Box vBox = Box.createVerticalBox();
+//
+//                vBox.add(name);
+//                vBox.add(Box.createVerticalStrut(50));
+//                vBox.add(retailPrice);
+//                vBox.add(Box.createVerticalStrut(30));
+//                vBox.add(manufacturer);
+//
+//                // 将图片和文字标签添加到面板
+//                panel.add(pic, BorderLayout.WEST);
+//                panel.add(vBox, BorderLayout.CENTER);
+//            }
+//
+//            // 选中和非选中时的显示模式
+//            if (isSelected) {
+//                panel.setBackground(list.getSelectionBackground());
+//                panel.setForeground(list.getSelectionForeground());
+//            } else {
+//                panel.setBackground(list.getBackground());
+//                panel.setForeground(list.getForeground());
+//            }
+//
+//            return panel;
+//        }
+//    }
 }
 
 

@@ -1,4 +1,4 @@
-package MyFrame;
+package ui.customframe;
 
 import javax.swing.*;
 import java.awt.*;
