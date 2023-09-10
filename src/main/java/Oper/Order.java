@@ -22,6 +22,10 @@ public class Order {
         this.quantity = quantity;
     }
 
+    public Order() {
+        // 无参构造函数
+    }
+
     public int getQuantity() {
         return quantity;
     }

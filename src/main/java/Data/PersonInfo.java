@@ -58,24 +58,14 @@ public class PersonInfo {
         //  读取excel表中的信息 填充上面的三个映射
         //  若文件不存在就新建一个
         File file = new File(filePath);
-        if (!file.exists()) {
-            ExcelWriter writer = EasyExcel.write(file).build();
-            WriteSheet sheet1 = EasyExcel.writerSheet(0, "Sheet1").head(Person.class).build();
-            WriteSheet sheet2 = EasyExcel.writerSheet(1, "Sheet2").head(User.class).build();
-            WriteSheet sheet3 = EasyExcel.writerSheet(2, "Sheet3").head(Commodity.class).build();
-            WriteSheet sheet4 = EasyExcel.writerSheet(3, "Sheet4").head(Order.class).build();
-            writer.write((Collection<?>) null, sheet1);
-            writer.write((Collection<?>) null, sheet2);
-            writer.write((Collection<?>) null, sheet3);
-            writer.write((Collection<?>) null, sheet4);
-            writer.finish();
-        }
         EasyExcel.read(file, Person.class, new AnalysisEventListener<Person>() {
             @Override
             public void invoke(Person person, AnalysisContext analysisContext) {
                 idToPeron.put(person.getID(), person);
                 accountToPassword.put(person.getAccount(), person.getPassword());
                 accountToID.put(person.getAccount(), person.getID());
+                // 获取cnt
+                cnt = Math.max(cnt, person.getID() + 1);
             }
 
             @Override
@@ -104,8 +94,14 @@ public class PersonInfo {
 
     // 登录验证
     // 输入 : 账号 密码
+    // 输出 : 是否登录成功
     public boolean signIn(String account, String password) {
-        return accountToPassword.get(account).equals(password);
+        if (accountToPassword.containsKey(account)) {
+            if (accountToPassword.get(account).equals(password)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     // 修改密码

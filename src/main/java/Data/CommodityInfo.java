@@ -33,18 +33,6 @@ public class CommodityInfo {
         //  读取excel表中的信息 填充上面的三个映射
         //  若文件不存在就新建一个
         File file = new File(filePath);
-        if (!file.exists()) {
-            ExcelWriter writer = EasyExcel.write(file).build();
-            WriteSheet sheet1 = EasyExcel.writerSheet(0, "Sheet1").head(Person.class).build();
-            WriteSheet sheet2 = EasyExcel.writerSheet(1, "Sheet2").head(User.class).build();
-            WriteSheet sheet3 = EasyExcel.writerSheet(2, "Sheet3").head(Commodity.class).build();
-            WriteSheet sheet4 = EasyExcel.writerSheet(3, "Sheet4").head(Order.class).build();
-            writer.write((Collection<?>) null, sheet1);
-            writer.write((Collection<?>) null, sheet2);
-            writer.write((Collection<?>) null, sheet3);
-            writer.write((Collection<?>) null, sheet4);
-            writer.finish();
-        }
         EasyExcel.read(file, Commodity.class, new AnalysisEventListener<Commodity>() {
             @Override
             public void invoke(Commodity commodity, AnalysisContext analysisContext) {
@@ -56,7 +44,6 @@ public class CommodityInfo {
             }
         }).sheet(2).doRead();
     }
-
 
     public static CommodityInfo getInstance() {
         return Commodity_INFO;

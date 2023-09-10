@@ -1,11 +1,8 @@
 package ui.adminframe;
 
+import ui.adminframe.adminframe_jpanel.ListALLCommodity;
 import ui.adminframe.adminframe_jpanel.ListAllCustomer;
 import ui.signframe.SignInFrame;
-import ui.userframe.userframe_jpanel.ChangePasswordPanel;
-import ui.userframe.userframe_jpanel.OrderHistoryPanel;
-import ui.userframe.userframe_jpanel.commodityPanel;
-import ui.userframe.userframe_jpanel.shoppingCarPanel;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -133,7 +130,7 @@ public class AdminFrame extends JFrame {
             }
             else if (lastPathComponent.equals(listAllCommodity)) {
                 // 列出所有商品信息
-                //sp.setRightComponent();
+                sp.setRightComponent(new ListALLCommodity());
             }
             else if (lastPathComponent.equals(addCommodity)) {
                 // 添加商品

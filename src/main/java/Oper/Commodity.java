@@ -20,6 +20,23 @@ public class Commodity {
     private String img;
     private double purCost, retailPrice; // 进货价 零售价
 
+    // 全参构造函数
+    public Commodity(int ID, String name, String manufacturer, String date, String type, double purCost, double retailPrice, int quantity, String img) {
+        this.ID = ID;
+        this.name = name;
+        this.manufacturer = manufacturer;
+        this.date = date;
+        this.type = type;
+        this.purCost = purCost;
+        this.retailPrice = retailPrice;
+        this.quantity = quantity;
+        this.img = img;
+    }
+
+    public Commodity() {
+        // 无参构造函数
+    }
+
     public double getPurCost() {
         return purCost;
     }

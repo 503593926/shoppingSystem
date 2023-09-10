@@ -11,6 +11,7 @@ import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.excel.write.metadata.WriteSheet;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Objects;
@@ -26,8 +27,8 @@ import java.util.Objects;
  */
 public class OrderInfo {
     private static final OrderInfo ORDER_INFO = new OrderInfo();
-    private HashMap<Integer, Order> userIdToPayedOrder;  // 存储用户id到已完成订单的映射
-    private HashMap<Integer, Order> userIdToPayingOrder;  // 存储用户id到待支付订单的映射
+    private HashMap<Integer, ArrayList<Order>> userIdToPayedOrder;  // 存储用户id到已完成订单的映射
+    private HashMap<Integer, ArrayList<Order>> userIdToPayingOrder;  // 存储用户id到待支付订单的映射
 
     private String filePath = "C:\\Users\\50359\\Desktop\\shopp.xlsx";  // excel数据文件的地址
 
@@ -36,31 +37,31 @@ public class OrderInfo {
         userIdToPayingOrder = new HashMap<>();
         //  若文件不存在就新建一个
         File file = new File(filePath);
-        if (!file.exists()) {
-            ExcelWriter writer = EasyExcel.write(file).build();
-            WriteSheet sheet1 = EasyExcel.writerSheet(0, "Sheet1").head(Person.class).build();
-            WriteSheet sheet2 = EasyExcel.writerSheet(1, "Sheet2").head(User.class).build();
-            WriteSheet sheet3 = EasyExcel.writerSheet(2, "Sheet3").head(Commodity.class).build();
-            WriteSheet sheet4 = EasyExcel.writerSheet(3, "Sheet4").head(Order.class).build();
-            writer.write((Collection<?>) null, sheet1);
-            writer.write((Collection<?>) null, sheet2);
-            writer.write((Collection<?>) null, sheet3);
-            writer.write((Collection<?>) null, sheet4);
-            writer.finish();
-        }
         EasyExcel.read(file, Order.class, new AnalysisEventListener<Order>() {
             @Override
             public void invoke(Order order, AnalysisContext analysisContext) {
                 if (order.getState() == 0)
-                    userIdToPayingOrder.put(order.getUserId(), order);
+                    if (userIdToPayingOrder.containsKey(order.getUserId()))
+                        userIdToPayingOrder.get(order.getUserId()).add(order);
+                    else {
+                        ArrayList<Order> orderList = new ArrayList<>();
+                        orderList.add(order);
+                        userIdToPayingOrder.put(order.getUserId(), orderList);
+                    }
                 else if (order.getState() == 1)
-                    userIdToPayedOrder.put(order.getUserId(), order);
+                    if (userIdToPayedOrder.containsKey(order.getUserId()))
+                        userIdToPayedOrder.get(order.getUserId()).add(order);
+                    else {
+                        ArrayList<Order> orderList = new ArrayList<>();
+                        orderList.add(order);
+                        userIdToPayedOrder.put(order.getUserId(), orderList);
+                    }
             }
 
             @Override
             public void doAfterAllAnalysed(AnalysisContext analysisContext) {
             }
-        }).sheet(2).doRead();
+        }).sheet(3).doRead();
     }
 
     public static OrderInfo getInstance() {
@@ -76,19 +77,20 @@ public class OrderInfo {
         this.filePath = filePath;
     }
 
-    public HashMap<Integer, Order> getUserIdToPayedOrder() {
+    public HashMap<Integer, ArrayList<Order>> getUserIdToPayedOrder() {
         return userIdToPayedOrder;
     }
 
-    public void setUserIdToPayedOrder(HashMap<Integer, Order> userIdToPayedOrder) {
+    public void setUserIdToPayedOrder(HashMap<Integer, ArrayList<Order>> userIdToPayedOrder) {
         this.userIdToPayedOrder = userIdToPayedOrder;
     }
 
-    public HashMap<Integer, Order> getUserIdToPayingOrder() {
+    public HashMap<Integer, ArrayList<Order>> getUserIdToPayingOrder() {
         return userIdToPayingOrder;
     }
 
-    public void setUserIdToPayingOrder(HashMap<Integer, Order> userIdToPayingOrder) {
+    public void setUserIdToPayingOrder(HashMap<Integer, ArrayList<Order>> userIdToPayingOrder) {
         this.userIdToPayingOrder = userIdToPayingOrder;
     }
+
 }
