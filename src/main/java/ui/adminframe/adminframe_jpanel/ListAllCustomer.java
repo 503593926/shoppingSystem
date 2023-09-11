@@ -1,5 +1,7 @@
 package ui.adminframe.adminframe_jpanel;
 
+import Data.OrderInfo;
+import Data.PersonInfo;
 import Data.UserInfo;
 import Oper.Commodity;
 import Oper.User;
@@ -38,7 +40,11 @@ public class ListAllCustomer extends JPanel {
         findButton.addActionListener(e -> {
             // 弹出一个对话框，输入要查找的 ID
             String inputTargetId = JOptionPane.showInputDialog(null, "请输入要查找的ID", "查找", JOptionPane.PLAIN_MESSAGE);
-            // 把targetid转换为int类型
+            // 输入验证
+            if (!inputTargetId.matches("\\d+")) {
+                JOptionPane.showMessageDialog(null, "ID必须是一个非负整数", "提示", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
             int targetId = Integer.parseInt(inputTargetId);
             int row;
             for (row = 0; row < table.getRowCount(); row++) {
@@ -75,8 +81,20 @@ public class ListAllCustomer extends JPanel {
                     for (int i = selectedRows.length - 1; i >= 0; i--) {
                         int selectedRow = selectedRows[i];
                         int id = (int) table.getValueAt(selectedRow, 0); // 获取选中行的 ID
-                        userInfo.getIdToUser().remove(id); // 从数据中删除
-                        model.userData.remove(selectedRow); // 从表格模型中删除
+                        // 从数据中删除
+                        PersonInfo personInfo = PersonInfo.getInstance();
+                        personInfo.getIdToPeron().remove(id);
+                        personInfo.getAccountToPassword().remove(userInfo.getIdToUser().get(id).getAccount());
+                        personInfo.getAccountToID().remove(userInfo.getIdToUser().get(id).getAccount());
+                        userInfo.getIdToUser().remove(id);
+                        // 删除和该用户有关的订单数据
+                        OrderInfo orderInfo = OrderInfo.getInstance();
+                        if (orderInfo.getUserIdToPayingOrder().containsKey(id))
+                            orderInfo.getUserIdToPayingOrder().remove(id);
+                        if (orderInfo.getUserIdToPayedOrder().containsKey(id))
+                            orderInfo.getUserIdToPayedOrder().remove(id);
+                        // 从表格模型中删除
+                        model.userData.remove(selectedRow);
                     }
                     // 通知表格更新
                     model.fireTableDataChanged();

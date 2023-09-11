@@ -67,7 +67,7 @@ public class ChangePasswordPanel extends JPanel {
                 // 修改密码
                 person.setPassword(newPassword);
                 personInfo.getAccountToPassword().put(person.getAccount(), newPassword);
-                JOptionPane.showMessageDialog(null, "修改成功", "提示", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "修改成功！你的新密码是:" + newPassword, "提示", JOptionPane.INFORMATION_MESSAGE);
             }
         });
 

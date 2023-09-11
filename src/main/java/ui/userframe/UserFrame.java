@@ -106,9 +106,7 @@ public class UserFrame extends JFrame {
         DefaultMutableTreeNode mine = new DefaultMutableTreeNode(new NodeData(mineIcon, "我的"));
         DefaultMutableTreeNode passwordManage = new DefaultMutableTreeNode(new NodeData(psManageIcon, "密码管理"));
         DefaultMutableTreeNode changePassword = new DefaultMutableTreeNode(new NodeData(changePasswordIcon, "修改密码"));
-        DefaultMutableTreeNode resetPassword = new DefaultMutableTreeNode(new NodeData(resetPasswordIcon, "重置密码"));
         passwordManage.add(changePassword);
-        passwordManage.add(resetPassword);
         mine.add(passwordManage);
 
         //组装选项树
@@ -151,10 +149,6 @@ public class UserFrame extends JFrame {
                 // 修改密码界面
                 sp.setRightComponent(new ChangePasswordPanel(id));
                 System.out.println("修改密码");
-            }
-            else if (lastPathComponent.equals(resetPassword)) {
-                // 重置密码界面
-                //sp.setRightComponent();
             }
         });
 

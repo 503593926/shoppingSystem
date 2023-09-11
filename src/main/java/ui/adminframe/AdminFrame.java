@@ -2,6 +2,7 @@ package ui.adminframe;
 
 import ui.adminframe.adminframe_jpanel.ListALLCommodity;
 import ui.adminframe.adminframe_jpanel.ListAllCustomer;
+import ui.adminframe.adminframe_jpanel.ResetPassword;
 import ui.signframe.SignInFrame;
 
 import javax.swing.*;
@@ -91,14 +92,7 @@ public class AdminFrame extends JFrame {
         // 商品管理 商品管理 -> ( 列出所有商品信息、添加商品、删除商品、修改商品信息 )
         DefaultMutableTreeNode commodityManage = new DefaultMutableTreeNode(new NodeData(commodityIcon, "商品管理"));
         DefaultMutableTreeNode listAllCommodity = new DefaultMutableTreeNode(new NodeData(commodityIcon, "列出所有商品信息"));
-        DefaultMutableTreeNode addCommodity = new DefaultMutableTreeNode(new NodeData(commodityIcon, "添加商品"));
-        DefaultMutableTreeNode deleteCommodity = new DefaultMutableTreeNode(new NodeData(commodityIcon, "删除商品"));
-        DefaultMutableTreeNode modifyCommodity = new DefaultMutableTreeNode(new NodeData(commodityIcon, "修改商品信息"));
         commodityManage.add(listAllCommodity);
-        commodityManage.add(addCommodity);
-        commodityManage.add(deleteCommodity);
-        commodityManage.add(modifyCommodity);
-
 
         //组装选项树
         DefaultMutableTreeNode select = new DefaultMutableTreeNode(new NodeData(commodityIcon, "选项"));
@@ -126,25 +120,12 @@ public class AdminFrame extends JFrame {
             }
             else if (lastPathComponent.equals(resetCustomerPassword)) {
                 // 重置密码界面
-                //sp.setRightComponent();
+                sp.setRightComponent(new ResetPassword());
             }
             else if (lastPathComponent.equals(listAllCommodity)) {
                 // 列出所有商品信息
                 sp.setRightComponent(new ListALLCommodity());
             }
-            else if (lastPathComponent.equals(addCommodity)) {
-                // 添加商品
-                //sp.setRightComponent();
-            }
-            else if (lastPathComponent.equals(deleteCommodity)) {
-                // 删除商品
-                //sp.setRightComponent();
-            }
-            else if (lastPathComponent.equals(modifyCommodity)) {
-                // 修改商品信息
-                //sp.setRightComponent();
-            }
-
         });
 
 

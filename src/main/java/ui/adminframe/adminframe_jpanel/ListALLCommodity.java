@@ -38,7 +38,11 @@ public class ListALLCommodity extends JPanel{
         findButton.addActionListener(e -> {
             // 弹出一个对话框，输入要查找的 ID
             String inputTargetId = JOptionPane.showInputDialog(null, "请输入要查找的商品ID", "查找", JOptionPane.PLAIN_MESSAGE);
-            // 把targetid转换为int类型
+            // 输入验证
+            if (!inputTargetId.matches("\\d+")) {
+                JOptionPane.showMessageDialog(null, "ID必须是一个非负整数", "提示", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
             int targetId = Integer.parseInt(inputTargetId);
             int row;
             for (row = 0; row < table.getRowCount(); row++) {
@@ -66,11 +70,11 @@ public class ListALLCommodity extends JPanel{
             int[] selectedRows = table.getSelectedRows();
             // 如果没有选中行，弹出提示框
             if (selectedRows.length == 0) {
-                JOptionPane.showMessageDialog(null, "请先选择要删除的客户", "提示", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "请先选择要删除的商品", "提示", JOptionPane.ERROR_MESSAGE);
             }
             else {
                 // 弹出确认对话框
-                int option = JOptionPane.showConfirmDialog(null, "确定要删除选中的客户吗？", "确认", JOptionPane.YES_NO_OPTION);
+                int option = JOptionPane.showConfirmDialog(null, "确定要删除选中的商品吗？", "确认", JOptionPane.YES_NO_OPTION);
                 if (option == JOptionPane.YES_OPTION) {
                     // 删除选中的行
                     for (int i = selectedRows.length - 1; i >= 0; i--) {
