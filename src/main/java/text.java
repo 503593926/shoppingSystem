@@ -12,7 +12,8 @@ class text {
     private ArrayList<Integer> lis = new ArrayList<>();
 
     public text() {
-
+         // 输出12345
+        System.out.println("12345");
     }
 
     void io() {

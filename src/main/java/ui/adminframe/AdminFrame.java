@@ -84,14 +84,14 @@ public class AdminFrame extends JFrame {
         /* 创建树形选项 */
         // 客户管理   客户管理 -> ( 列出所有客户、删除客户、查询客户信息、重置客户密码 )
         DefaultMutableTreeNode customerManage = new DefaultMutableTreeNode(new NodeData(commodityIcon, "客户管理"));
-        DefaultMutableTreeNode listAllCustomer = new DefaultMutableTreeNode(new NodeData(commodityIcon, "列出所有客户"));
+        DefaultMutableTreeNode listAllCustomer = new DefaultMutableTreeNode(new NodeData(commodityIcon, "客户信息"));
         DefaultMutableTreeNode resetCustomerPassword = new DefaultMutableTreeNode(new NodeData(commodityIcon, "重置客户密码"));
         customerManage.add(listAllCustomer);
         customerManage.add(resetCustomerPassword);
 
         // 商品管理 商品管理 -> ( 列出所有商品信息、添加商品、删除商品、修改商品信息 )
         DefaultMutableTreeNode commodityManage = new DefaultMutableTreeNode(new NodeData(commodityIcon, "商品管理"));
-        DefaultMutableTreeNode listAllCommodity = new DefaultMutableTreeNode(new NodeData(commodityIcon, "列出所有商品信息"));
+        DefaultMutableTreeNode listAllCommodity = new DefaultMutableTreeNode(new NodeData(commodityIcon, "商品信息"));
         commodityManage.add(listAllCommodity);
 
         //组装选项树

@@ -76,7 +76,7 @@ public class PersonInfo {
 
     // 注册新用户
     // 输入 : 账号 密码 身份
-    public void register(String account, String password, int status) {
+    public void register(String account, String password, String phone, String email, int status) {
         //  更新映射
         idToPeron.put(cnt, new Person(account, password, cnt, status));
         accountToPassword.put(account, password);
@@ -89,7 +89,7 @@ public class PersonInfo {
 
         // 更新UserInfo中的映射
         UserInfo userInfo = UserInfo.getInstance();
-        userInfo.getIdToUser().put(cnt, new User(account, password, cnt ++, defaultFormattedTime));
+        userInfo.getIdToUser().put(cnt, new User(account, password, phone, email, cnt ++, defaultFormattedTime));
     }
 
     // 登录验证

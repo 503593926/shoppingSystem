@@ -26,7 +26,7 @@ public class SignUpFrame extends SignInFrame {
 
     public void init() {
         // 设置窗口的属性
-        this.setBounds(450, 180, 600, 400); // 设置位置和大小
+        this.setBounds(450, 180, 600, 600); // 设置位置和大小
         this.setResizable(false); // 不可调整大小
         this.setTitle("注册界面"); // 设置标题
         this.setVisible(true); // 可见
@@ -71,6 +71,37 @@ public class SignUpFrame extends SignInFrame {
         pBox.add(Box.createHorizontalStrut(25));
         pBox.add(pTextField);
 
+        // 创建确认密码输入部分组件
+        JLabel cpLabel = new JLabel("确认密码:");
+        JPasswordField cpTextField = new JPasswordField(12);
+
+        // 组装确认密码输入部分组件
+        Box cpBox = Box.createHorizontalBox();
+        cpBox.add(cpLabel);
+        cpBox.add(Box.createHorizontalStrut(25));
+        cpBox.add(cpTextField);
+
+        // 创建邮箱输入部分组件
+        JLabel eLabel = new JLabel("邮箱:");
+        JTextField eTextField = new JTextField(12);
+
+        // 组装邮箱输入部分组件
+        Box eBox = Box.createHorizontalBox();
+        eBox.add(eLabel);
+        eBox.add(Box.createHorizontalStrut(25));
+        eBox.add(eTextField);
+
+        // 创建电话输入部分组件
+        JLabel tLabel = new JLabel("电话:");
+        JTextField tTextField = new JTextField(12);
+
+        // 组装电话输入部分组件
+        Box tBox = Box.createHorizontalBox();
+        tBox.add(tLabel);
+        tBox.add(Box.createHorizontalStrut(25));
+        tBox.add(tTextField);
+
+
         // 创建按键部分组件
         JButton sButton = new JButton("提交");
         JButton bButton = new JButton("返回");
@@ -78,6 +109,43 @@ public class SignUpFrame extends SignInFrame {
         sButton.addActionListener((e) -> {
             String account = aTextField.getText(); // 获取输入的账号
             String password = pTextField.getText(); // 获取输入的密码
+            String confirmPassword = cpTextField.getText(); // 获取输入的确认密码
+            String email = eTextField.getText(); // 获取输入的邮箱
+            String phone = tTextField.getText(); // 获取输入的电话
+
+            // 输入验证
+            if (account.equals("")) {
+                JOptionPane.showMessageDialog(this, "账号不能为空");
+                return;
+            }
+            if (password.equals("")) {
+                JOptionPane.showMessageDialog(this, "密码不能为空");
+                return;
+            }
+            if (confirmPassword.equals("")) {
+                JOptionPane.showMessageDialog(this, "确认密码不能为空");
+                return;
+            }
+            if (email.equals("")) {
+                JOptionPane.showMessageDialog(this, "邮箱不能为空");
+                return;
+            }
+            if (phone.equals("")) {
+                JOptionPane.showMessageDialog(this, "电话不能为空");
+                return;
+            }
+            if (!password.equals(confirmPassword)) {
+                JOptionPane.showMessageDialog(this, "两次输入的密码不一致");
+                return;
+            }
+            if (!email.matches("\\w+@\\w+\\.\\w+")) {
+                JOptionPane.showMessageDialog(this, "邮箱格式不正确");
+                return;
+            }
+            if (!phone.matches("\\d{11}")) {
+                JOptionPane.showMessageDialog(this, "电话格式不正确");
+                return;
+            }
 
             PersonInfo personInfo = PersonInfo.getInstance(); // 获取PersonInfo实例
             // 判断账号是否存在
@@ -87,7 +155,7 @@ public class SignUpFrame extends SignInFrame {
             }
             else {
                 // 账号不存在
-                personInfo.register(account, password, 1); // 注册账号
+                personInfo.register(account, password, phone, email, 1); // 注册账号
                 JOptionPane.showMessageDialog(this, "注册成功, 即将前往登录页面");
                 new SignInFrame();
                 this.dispose();
@@ -109,10 +177,17 @@ public class SignUpFrame extends SignInFrame {
         Box vBox = Box.createVerticalBox();
         vBox.add(Box.createVerticalStrut(70));
         vBox.add(aBox);
-        vBox.add(Box.createVerticalStrut(30));
+        vBox.add(Box.createVerticalStrut(50));
         vBox.add(pBox);
         vBox.add(Box.createVerticalStrut(50));
+        vBox.add(cpBox);
+        vBox.add(Box.createVerticalStrut(50));
+        vBox.add(eBox);
+        vBox.add(Box.createVerticalStrut(50));
+        vBox.add(tBox);
+        vBox.add(Box.createVerticalStrut(35));
         vBox.add(bBox);
+
 
         // 设置面板中所有组件的字体
         Font customFont = new Font("微软雅黑", Font.PLAIN, 22);

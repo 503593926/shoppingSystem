@@ -11,6 +11,8 @@ import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -27,8 +29,39 @@ public class ListALLCommodity extends JPanel{
         MyTableModel model = new MyTableModel(commodityInfo.getIdToCommodity().values());
         // 创建一个表格
         JTable table = new JTable(model);
+        table.setSurrendersFocusOnKeystroke(true);
+        table.putClientProperty("JTable.autoStartsEdit", true);
+        table.putClientProperty("JTable.autoStartsEdit", true);
         table.setDefaultRenderer(Object.class, new CenteredTableCellRenderer()); // 使用自定义渲染器让表格中文字居中显示
         table.setRowHeight(25); // 将所有行的高度设置为25像素
+        // 添加鼠标事件监听器到表格
+        table.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
+                    int columnIndex = table.columnAtPoint(e.getPoint());
+                    int rowIndex = table.rowAtPoint(e.getPoint());
+
+                    // 判断是否点击了图片列
+                    if (columnIndex == 0 && rowIndex >= 0) {
+                        // 打开文件选择器
+                        JFileChooser fileChooser = new JFileChooser();
+                        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+                        int result = fileChooser.showOpenDialog(null);
+
+                        if (result == JFileChooser.APPROVE_OPTION) {
+                            String imgPath = fileChooser.getSelectedFile().getAbsolutePath();
+                            Commodity commodity = model.commodityData.get(rowIndex);
+                            commodity.setImg(imgPath);
+
+                            // 更新数据后，通知表格模型数据已更改
+                            model.fireTableCellUpdated(rowIndex, columnIndex);
+                        }
+                    }
+                }
+            }
+        });
+
         // 添加滚动条
         JScrollPane scrollPane = new JScrollPane(table);
 
@@ -39,6 +72,8 @@ public class ListALLCommodity extends JPanel{
             // 弹出一个对话框，输入要查找的 ID
             String inputTargetId = JOptionPane.showInputDialog(null, "请输入要查找的商品ID", "查找", JOptionPane.PLAIN_MESSAGE);
             // 输入验证
+            if (inputTargetId == null)
+                return;
             if (!inputTargetId.matches("\\d+")) {
                 JOptionPane.showMessageDialog(null, "ID必须是一个非负整数", "提示", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -61,9 +96,10 @@ public class ListALLCommodity extends JPanel{
 
         });
 
-        // 创建删除和添加按钮
+        // 创建删除和添加和修改按钮按钮
         JButton deleteButton = new JButton("删除");
         JButton addButton = new JButton("添加");
+
         // 监听删除按钮
         deleteButton.addActionListener(e -> {
             // 获取选中的行
@@ -262,25 +298,58 @@ public class ListALLCommodity extends JPanel{
             }
         }
 
-//        @Override
-//        public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-//            // 当单元格的值被修改时，更新对应的 Person 对象
-//            User user = userData.get(rowIndex);
-//            switch (columnIndex) {
-//                case 0:
-//                    user.setName((String) aValue);
-//                    break;
-//                case 1:
-//                    user.setAge((int) aValue);
-//                    break;
-//                case 2:
-//                    user.setGender((String) aValue);
-//                    break;
-//                default:
-//                    break;
-//            }
-//            fireTableCellUpdated(rowIndex, columnIndex);
-//        }
+        @Override
+        public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+            Commodity commodity = commodityData.get(rowIndex);
+            switch (columnIndex) {
+                case 0:
+                    // 修改图片
+                    //commodity.setImg((String) aValue);
+                    break;
+                case 1:
+                    // 如果要修改ID，你可以在这里更新商品的ID属性
+                    // commodity.setID((String) aValue);
+                    break;
+                case 2:
+                    // 修改名称
+                    commodity.setName((String) aValue);
+                    break;
+                case 3:
+                    // 修改进货价
+                    commodity.setPurCost(Double.parseDouble((String) aValue));
+                    break;
+                case 4:
+                    // 修改销售价
+                    commodity.setRetailPrice(Double.parseDouble((String) aValue));
+                    break;
+                case 5:
+                    // 修改生产厂商
+                    commodity.setManufacturer((String) aValue);
+                    break;
+                case 6:
+                    // 修改类型
+                    commodity.setType((String) aValue);
+                    break;
+                case 7:
+                    // 修改数量
+                    commodity.setQuantity(Integer.parseInt((String) aValue));
+                    break;
+                case 8:
+                    // 修改生产日期
+                    commodity.setDate((String) aValue);
+                    break;
+                default:
+                    break;
+            }
+            // 更新数据后，通知表格模型数据已更改
+            fireTableCellUpdated(rowIndex, columnIndex);
+        }
+        // 设置单元格为可编辑
+        @Override
+        public boolean isCellEditable(int rowIndex, int columnIndex) {
+            // 图片和id列不可编辑
+            return columnIndex != 0 && columnIndex != 1;
+        }
     }
 
 

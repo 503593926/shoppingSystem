@@ -14,8 +14,10 @@ public class User extends Person{
     private String level, time, email, phone;
     private double consumption;
 
-    public User(String account, String password, int ID, String time){
+    public User(String account, String password, String phone, String email, int ID, String time){
         super(account, password, ID, 1);
+        this.phone = phone;
+        this.email = email;
         this.time = time;
     }
 

@@ -41,6 +41,8 @@ public class ListAllCustomer extends JPanel {
             // 弹出一个对话框，输入要查找的 ID
             String inputTargetId = JOptionPane.showInputDialog(null, "请输入要查找的ID", "查找", JOptionPane.PLAIN_MESSAGE);
             // 输入验证
+            if(inputTargetId == null)
+                return;
             if (!inputTargetId.matches("\\d+")) {
                 JOptionPane.showMessageDialog(null, "ID必须是一个非负整数", "提示", JOptionPane.ERROR_MESSAGE);
                 return;
