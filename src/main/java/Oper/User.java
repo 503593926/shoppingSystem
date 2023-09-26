@@ -19,6 +19,7 @@ public class User extends Person{
         this.phone = phone;
         this.email = email;
         this.time = time;
+        this.level = "普通客户";
     }
 
     public User() {

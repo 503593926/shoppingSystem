@@ -3,6 +3,7 @@ package ui.userframe.userframe_jpanel;
 import Data.CommodityInfo;
 import Data.OrderInfo;
 import Data.PersonInfo;
+import Data.UserInfo;
 import Oper.Order;
 import Oper.Person;
 import ui.customframe.MyPic;
@@ -59,7 +60,13 @@ public class shoppingCarPanel extends JPanel {
         btnBox.add(deleteButton);
         btnBox.add(Box.createHorizontalGlue());
 
+        // 监听结算按钮
         payButton.addActionListener(e -> {
+            // 未选中任何商品
+            if (list.getSelectedValuesList().size() == 0) {
+                JOptionPane.showMessageDialog(this, "请选择要购买的商品!");
+                return;
+            }
             // 获取选中的商品
             double totalPrice = 0.0;
             for (Order selectedValue : list.getSelectedValuesList()) {
@@ -82,9 +89,6 @@ public class shoppingCarPanel extends JPanel {
                     Commodity commodity = commodityInfo1.getIdToCommodity().get(selectedValue.getCommodityId());
                     // 获取商品数量
                     int number = selectedValue.getQuantity();
-                    // 获取用户信息
-                    PersonInfo personInfo = PersonInfo.getInstance();
-                    Person person = personInfo.getIdToPeron().get(id);
                     // 修改商品数量
                     commodity.setQuantity(commodity.getQuantity() - number);
                     // 修改order状态
@@ -102,10 +106,46 @@ public class shoppingCarPanel extends JPanel {
                     // 更新显示
                     payingCommodityModel.removeElement(selectedValue);
                 }
+                // 更新用户消费金额
+                UserInfo userInfo = UserInfo.getInstance();
+                userInfo.getIdToUser().get(id).setConsumption(userInfo.getIdToUser().get(id).getConsumption() + totalPrice);
+                JOptionPane.showMessageDialog(this, "购买成功!");
+                // 更新用户等级 铜 -> 银 -> 金 ：100 -> 1000 > 10000
+                if (userInfo.getIdToUser().get(id).getConsumption() >= 100 && userInfo.getIdToUser().get(id).getConsumption() < 1000) {
+                    userInfo.getIdToUser().get(id).setLevel("铜牌客户");
+                } else if (userInfo.getIdToUser().get(id).getConsumption() >= 1000 && userInfo.getIdToUser().get(id).getConsumption() < 10000) {
+                    userInfo.getIdToUser().get(id).setLevel("银牌客户");
+                } else if (userInfo.getIdToUser().get(id).getConsumption() >= 10000) {
+                    userInfo.getIdToUser().get(id).setLevel("金牌客户");
+                }
             } else if (choice == JOptionPane.NO_OPTION) {
                 // 用户点击了 "否" 按钮
             } else {
                 // 用户关闭了对话框或者按下了 "取消" 按钮
+            }
+        });
+        // 监听删除按钮
+        deleteButton.addActionListener(e -> {
+            if (list.getSelectedValuesList().size() == 0) {
+                JOptionPane.showMessageDialog(this, "请选择要删除的商品!");
+                return;
+            }
+            // 弹出提示框
+            int choice = JOptionPane.showConfirmDialog(null, "您确定要删除吗?", "确认删除", JOptionPane.YES_NO_OPTION);
+            if (choice == JOptionPane.YES_OPTION) {
+                // 获取选中的商品
+                for (Order selectedValue : list.getSelectedValuesList()) {
+                    // 删除
+                    // 获取商品信息
+                    CommodityInfo commodityInfo1 = CommodityInfo.getInstance();
+                    Commodity commodity = commodityInfo1.getIdToCommodity().get(selectedValue.getCommodityId());
+                    // 更新orderInfo中的映射
+                    OrderInfo orderInfo = OrderInfo.getInstance();
+                    orderInfo.getUserIdToPayingOrder().get(id).remove(selectedValue);
+                    // 更新显示
+                    payingCommodityModel.removeElement(selectedValue);
+                }
+                JOptionPane.showMessageDialog(this, "删除成功!");
             }
         });
 

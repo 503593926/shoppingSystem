@@ -92,6 +92,7 @@ public class SignInFrame extends JFrame {
             else {
                 // 登陆失败弹出提示框
                 JOptionPane.showMessageDialog(this, "账号或密码错误");
+                // 连续登录失败五则禁止该账户登录
             }
         }));
         // 监听注册按键

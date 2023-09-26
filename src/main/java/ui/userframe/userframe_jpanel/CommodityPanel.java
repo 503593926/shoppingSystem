@@ -186,6 +186,10 @@ public class CommodityPanel extends JPanel {
             String quantity = JOptionPane.showInputDialog("请输入加入购物车的商品数量:");
             // 判断用户输入的数量是否合法
             // 如果用户输入的不是数字或者小于等于0的数字，弹出提示框
+            if (quantity == null) {
+                // 用户点击了取消按钮
+                return;
+            }
             if  (!quantity.matches("[0-9]+") || Integer.parseInt(quantity) == 0) {
                 JOptionPane.showMessageDialog(this, "请输入一个大于零的整数!");
             }
@@ -214,6 +218,10 @@ public class CommodityPanel extends JPanel {
             // 弹出一个对话框,询问用户购买的商品的数量
             String quantity = JOptionPane.showInputDialog("请输入购买的商品数量:");
             // 判断用户输入的数量是否合法
+            if (quantity == null) {
+                // 用户点击了取消按钮
+                return;
+            }
             if  (!quantity.matches("[0-9]+") || Integer.parseInt(quantity) == 0) {
                 JOptionPane.showMessageDialog(this, "请输入一个大于零的整数!");
             }
@@ -242,6 +250,14 @@ public class CommodityPanel extends JPanel {
                         UserInfo userInfo = UserInfo.getInstance();
                         userInfo.getIdToUser().get(id).setConsumption(userInfo.getIdToUser().get(id).getConsumption() + commodity.getRetailPrice() * num);
                         JOptionPane.showMessageDialog(this, "购买成功!");
+                        // 更新用户等级 铜 -> 银 -> 金 ：100 -> 1000 > 10000
+                        if (userInfo.getIdToUser().get(id).getConsumption() >= 100 && userInfo.getIdToUser().get(id).getConsumption() < 1000) {
+                            userInfo.getIdToUser().get(id).setLevel("铜牌客户");
+                        } else if (userInfo.getIdToUser().get(id).getConsumption() >= 1000 && userInfo.getIdToUser().get(id).getConsumption() < 10000) {
+                            userInfo.getIdToUser().get(id).setLevel("银牌客户");
+                        } else if (userInfo.getIdToUser().get(id).getConsumption() >= 10000) {
+                            userInfo.getIdToUser().get(id).setLevel("金牌客户");
+                        }
                         // 更新quantityLabel
                         quantityLabel.setText("剩余数量:" + commodity.getQuantity());
                         // 重新绘制布局
@@ -265,7 +281,7 @@ public class CommodityPanel extends JPanel {
         this.add(vBox, BorderLayout.CENTER);
     }
 
-    // 自定义商品list渲染器
+    // 自定义商品list渲染器 显示商品概览
     private class myListCellRenderer implements ListCellRenderer<Commodity> {
         private JPanel panel;
         private MyPic pic;

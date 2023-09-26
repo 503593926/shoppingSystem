@@ -9,6 +9,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /*
 登录界面类: 显示登录界面
@@ -114,8 +116,14 @@ public class SignUpFrame extends SignInFrame {
             String phone = tTextField.getText(); // 获取输入的电话
 
             // 输入验证
-            if (account.equals("")) {
-                JOptionPane.showMessageDialog(this, "账号不能为空");
+            // 账号不少于5个字符
+            if (account.length() < 5) {
+                JOptionPane.showMessageDialog(this, "账号不少于5个字符");
+                return;
+            }
+            // 密码长度大于八个字符必须是大小写字母、数字和标点符号的组合
+            if (!isPasswordValid(password)) {
+                JOptionPane.showMessageDialog(this, "密码长度大于八个字符必须是大小写字母、数字和标点符号的组合");
                 return;
             }
             if (password.equals("")) {
@@ -198,5 +206,15 @@ public class SignUpFrame extends SignInFrame {
 
         // 把带有背景图片的面板添加到根容器中
         container.add(bgPanel);
+    }
+
+
+    // 正则表达式验证密码
+    public static boolean isPasswordValid(String password) {
+        // 使用正则表达式检查密码是否符合要求
+        String regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[.,;?!'\":]).{8,}$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(password);
+        return matcher.matches();
     }
 }

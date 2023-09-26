@@ -1,9 +1,7 @@
 package ui.adminframe.adminframe_jpanel;
 
 import Data.CommodityInfo;
-import Data.UserInfo;
 import Oper.Commodity;
-import Oper.User;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
