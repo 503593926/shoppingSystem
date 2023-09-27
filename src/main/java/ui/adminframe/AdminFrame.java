@@ -4,6 +4,7 @@ import ui.adminframe.adminframe_jpanel.ListALLCommodity;
 import ui.adminframe.adminframe_jpanel.ListAllCustomer;
 import ui.adminframe.adminframe_jpanel.ResetPassword;
 import ui.signframe.SignInFrame;
+import ui.userframe.userframe_jpanel.ChangePasswordPanel;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -94,10 +95,14 @@ public class AdminFrame extends JFrame {
         DefaultMutableTreeNode listAllCommodity = new DefaultMutableTreeNode(new NodeData(commodityIcon, "商品信息"));
         commodityManage.add(listAllCommodity);
 
+        // 修改密码
+        DefaultMutableTreeNode changePass = new DefaultMutableTreeNode(new NodeData(commodityIcon, "修改密码"));
+
         //组装选项树
         DefaultMutableTreeNode select = new DefaultMutableTreeNode(new NodeData(commodityIcon, "选项"));
         select.add(customerManage);
         select.add(commodityManage);
+        select.add(changePass);
         JTree tree = new JTree(select);
 
         // 设置结点渲染器
@@ -125,6 +130,10 @@ public class AdminFrame extends JFrame {
             else if (lastPathComponent.equals(listAllCommodity)) {
                 // 列出所有商品信息
                 sp.setRightComponent(new ListALLCommodity());
+            }
+            else if (lastPathComponent.equals(changePass)) {
+                // 修改密码
+                sp.setRightComponent(new ChangePasswordPanel(id));
             }
         });
 
