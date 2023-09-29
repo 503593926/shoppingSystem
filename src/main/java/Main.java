@@ -7,9 +7,6 @@ public class Main {
         // 创建登录界面
         Port.importData();
         new SignInFrame();
-        // 输出personInfo中的数据
-        PersonInfo personInfo = PersonInfo.getInstance();
-        System.out.println(personInfo.getAccountToPassword());
         // 注册关闭钩子
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             // 在进程结束前执行导出数据的操作

@@ -30,7 +30,7 @@ public class OrderInfo {
     private HashMap<Integer, ArrayList<Order>> userIdToPayedOrder;  // 存储用户id到已完成订单的映射
     private HashMap<Integer, ArrayList<Order>> userIdToPayingOrder;  // 存储用户id到待支付订单的映射
 
-    private String filePath = "C:\\Users\\50359\\Desktop\\shopp.xlsx";  // excel数据文件的地址
+    private String filePath = "shopp.xlsx";  // excel数据文件的地址
 
     public OrderInfo() {
         userIdToPayedOrder = new HashMap<>();

@@ -26,7 +26,7 @@ import java.util.HashMap;
 public class CommodityInfo {
     private static final CommodityInfo Commodity_INFO = new CommodityInfo();
     private HashMap<Integer, Commodity> idToCommodity;  // 存储id到Commodity对象的映射
-    private String filePath = "C:\\Users\\50359\\Desktop\\shopp.xlsx";  // excel数据文件的地址
+    private String filePath = "shopp.xlsx";  // excel数据文件的地址
 
     public CommodityInfo() {
         idToCommodity = new HashMap<>();

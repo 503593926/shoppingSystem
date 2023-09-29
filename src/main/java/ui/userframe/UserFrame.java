@@ -34,13 +34,13 @@ public class UserFrame extends JFrame {
     private final int WIDTH = 800; // 该frame的宽度
     private final int HEIGHT = 600; // 该frame的高度
     // 选项图标
-    private ImageIcon commodityIcon = new ImageIcon("D:\\code\\java\\shopp\\src\\main\\resources\\icon\\商品.png");
-    private ImageIcon shoppingCartIcon = new ImageIcon("D:\\code\\java\\shopp\\src\\main\\resources\\icon\\购物车.png");
-    private ImageIcon historyOrderIcon = new ImageIcon("D:\\code\\java\\shopp\\src\\main\\resources\\icon\\历史订单.png");
-    private ImageIcon mineIcon = new ImageIcon("D:\\code\\java\\shopp\\src\\main\\resources\\icon\\用户.png");
-    private ImageIcon psManageIcon = new ImageIcon("D:\\code\\java\\shopp\\src\\main\\resources\\icon\\密码管理.png");
-    private ImageIcon changePasswordIcon = new ImageIcon("D:\\code\\java\\shopp\\src\\main\\resources\\icon\\修改密码.png");
-    private ImageIcon resetPasswordIcon = new ImageIcon("D:\\code\\java\\shopp\\src\\main\\resources\\icon\\重置密码.png");
+    private ImageIcon commodityIcon = new ImageIcon("src\\main\\resources\\icon\\商品.png");
+    private ImageIcon shoppingCartIcon = new ImageIcon("src\\main\\resources\\icon\\购物车.png");
+    private ImageIcon historyOrderIcon = new ImageIcon("src\\main\\resources\\icon\\历史订单.png");
+    private ImageIcon mineIcon = new ImageIcon("src\\main\\resources\\icon\\用户.png");
+    private ImageIcon psManageIcon = new ImageIcon("src\\main\\resources\\icon\\密码管理.png");
+    private ImageIcon changePasswordIcon = new ImageIcon("src\\main\\resources\\icon\\修改密码.png");
+    private ImageIcon resetPasswordIcon = new ImageIcon("src\\main\\resources\\icon\\重置密码.png");
 
 
     public UserFrame(int id) {

@@ -46,7 +46,7 @@ public class PersonInfo {
     private int cnt;
 
     private String defPassword;
-    private final String filePath = "C:\\Users\\50359\\Desktop\\shopp.xlsx";
+    private final String filePath = "shopp.xlsx";
 
     // 加载excel表的数据
     private PersonInfo() {

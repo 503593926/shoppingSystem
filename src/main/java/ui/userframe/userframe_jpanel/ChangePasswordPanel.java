@@ -1,6 +1,7 @@
 package ui.userframe.userframe_jpanel;
 
 import Data.PersonInfo;
+import Data.UserInfo;
 import Oper.Person;
 
 import javax.swing.*;
@@ -67,11 +68,11 @@ public class ChangePasswordPanel extends JPanel {
                 // 修改密码
                 person.setPassword(newPassword);
                 personInfo.getAccountToPassword().put(person.getAccount(), newPassword);
+                // 修改userInfo中的密码
+                UserInfo userInfo = UserInfo.getInstance();
+                userInfo.getIdToUser().get(id).setPassword(newPassword);
                 JOptionPane.showMessageDialog(null, "修改成功！你的新密码是:" + newPassword, "提示", JOptionPane.INFORMATION_MESSAGE);
             }
         });
-
     }
-
-
 }

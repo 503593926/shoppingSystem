@@ -32,7 +32,7 @@ public class UserInfo {
 
     private HashMap<Integer, User> idToUser;
 
-    private final String filePath = "C:\\Users\\50359\\Desktop\\shopp.xlsx";
+    private final String filePath = "shopp.xlsx";
     private UserInfo() {
         idToUser = new HashMap<>();
         //  读取excel表中的信息 填充上面的三个映射

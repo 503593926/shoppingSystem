@@ -14,7 +14,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class Port {
-    private static String filePath = "C:\\Users\\50359\\Desktop\\shopp.xlsx";  // excel数据文件的地址
+    private static String filePath = "shopp.xlsx";  // excel数据文件的地址
     private static PersonInfo personInfo;
     private static UserInfo userInfo;
     private static CommodityInfo commodityInfo;

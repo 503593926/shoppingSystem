@@ -11,7 +11,6 @@ package Oper;
  */
 
 public class Admin extends Person{
-
     public Admin(String account, String password, int ID) {
         super(account, password, ID, 0);
     }
